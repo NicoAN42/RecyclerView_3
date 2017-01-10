@@ -9,8 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import model.Hotel;
-public class InputActivity extends AppCompatActivity {
+
+import model.Hotel;public class InputActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_GET = 1;
     EditText etJudul;
     EditText etDeskripsi;
@@ -46,6 +46,23 @@ public class InputActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        hotel = (Hotel) getIntent().getSerializableExtra(MainActivity.HOTEL);
+        if (hotel != null) {
+            setTitle("Edit " + hotel.judul);
+            fillData();
+        } else {
+            setTitle("New Hotel");
+        }
+    }
+
+    private void fillData() {
+        etJudul.setText(hotel.judul);
+        etDeskripsi.setText(hotel.deskripsi);
+        etDetail.setText(hotel.detail);
+        etLokasi.setText(hotel.lokasi);
+        uriFoto = Uri.parse(hotel.foto);
+        ivFoto.setImageURI(uriFoto);
     }
 
     private void pickPhoto() {
