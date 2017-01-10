@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,9 @@ import android.view.View;
 
 import java.util.ArrayList;
 import adapter.HotelAdapter;
-import model.Hotel;public class MainActivity extends AppCompatActivity implements HotelAdapter.IHotelAdapter {
+import model.Hotel;
+
+public class MainActivity extends AppCompatActivity implements HotelAdapter.IHotelAdapter {
 
     public static final int REQUEST_CODE_EDIT = 99;
     public static final String HOTEL = null;
@@ -79,7 +82,7 @@ import model.Hotel;public class MainActivity extends AppCompatActivity implement
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail,menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
@@ -115,7 +118,19 @@ import model.Hotel;public class MainActivity extends AppCompatActivity implement
 
     @Override
     public void doDelete(int pos) {
-
+        itemPos = pos;
+        final Hotel hotel = mList.get(pos);
+        mList.remove(itemPos);
+        mAdapter.notifyDataSetChanged();
+        Snackbar.make(findViewById(R.id.fab), hotel.judul + "Terhapus", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mList.add(itemPos, hotel);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .show();
     }
 
     @Override
